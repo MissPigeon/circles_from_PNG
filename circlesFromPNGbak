@@ -1,0 +1,33 @@
+def convertToHeader():
+  file = open(pickAFile(), "w")
+  image = makePicture(pickAFile())
+  pixels = getPixels(image)
+  pixelsList = [None]*len(pixels)
+  length = len(pixels)
+  
+  width = getWidth(image)
+  height = getHeight(image)
+  file.write("uint16_t len = " + str(height) + ";" + "\n")
+  file.write("const uint8_t PROGMEM anim[" + str(height) + "]" + "[19]" + "[3] = {" + "\n")
+  
+  i = 0
+  y = 0
+  while (y < height):
+    x = 0
+    file.write("{")
+    while (x < width):
+      pixel = getPixel(image, x, y)
+      r = getRed(pixel)
+      g = getGreen(pixel)
+      b = getBlue(pixel)
+      pixelsList[i] = (r, g, b)
+      file.write(str(pixelsList[i]) + ",")
+      x += 1
+      i += 1 
+    file.write("},\n")
+    y += 1
+  print pixelsList
+  
+  file.write("};")
+  
+  file.close()
